@@ -11,10 +11,12 @@ import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/adi/dictionary")
 public class DictionaryController {
 
     private static final Logger logger = LoggerFactory.getLogger(DictionaryController.class);
@@ -125,4 +127,19 @@ public class DictionaryController {
         logger.info(message);
         return entry;
     }
+    @GetMapping("/words/ending-with/{value}")
+    public List<Entry> getWordsEndingWith(@PathVariable String value) {
+        List<Entry> words = dictionaryService.getWordsEndingWith(value);
+
+        if (words.isEmpty()) {
+            // Log a message indicating no words were found
+            System.out.println("No words found ending with: " + value);
+        } else {
+            // Log the found words
+            System.out.println("Words ending with " + value + ": " + words);
+        }
+
+        return words;
+    }
 }
+

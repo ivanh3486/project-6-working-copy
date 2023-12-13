@@ -8,7 +8,7 @@ import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.http.ResponseEntity;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,5 +77,18 @@ public class AggregatorController {
         logger.info(message);
 
         return entries;
+    }
+    @GetMapping("/getAllPalindromes")
+    public ResponseEntity<List<Entry>> getAllPalindromes() {
+        StopWatch sw = new StopWatch();
+        sw.start();
+        List<Entry> palindromes = service.getAllPalindromes();
+        sw.stop();
+
+        long nanoSeconds = sw.getLastTaskTimeNanos();
+        String message = String.format("Retrieved all palindromes in %.2f ms", nanoSeconds / 1000000.0);
+        logger.info(message);
+
+        return ResponseEntity.ok(palindromes);
     }
 }
